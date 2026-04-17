@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Ứng dụng nắm tình hình</title>
+  <link rel="stylesheet" href="style.css">
+</head><link rel="manifest" href="manifest.json">
+
+<body>
+  <div class="container">
+    <h2>📋 Nắm tình hình tư tưởng đơn vị</h2>
+
+    <label>Họ tên</label>
+    <input id="name" type="text" placeholder="Nhập họ tên">
+
+    <label>Tình trạng</label>
+    <select id="status">
+      <option value="Tốt">Tốt</option>
+      <option value="Bình thường">Bình thường</option>
+      <option value="Cần chú ý">Cần chú ý</option>
+    </select>
+
+    <label>Ghi chú</label>
+    <textarea id="note" placeholder="Nhập nội dung..."></textarea>
+
+    <button onclick="saveData()">Gửi báo cáo</button>
+
+    <h3>Kết quả đã gửi</h3>
+    <button onclick="clearAll()">🗑️ Xóa hôm nay</button>
+<button onclick="showHistory()">📅 Xem lịch sử</button>
+
+<div id="result"></div>
+
+<div id="history"></div>
+</div>
+
+  <script src="app.js"></script>
+</body><script>
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("service-worker.js");
+  }
+</script>
+</html>
+<h3>📌 Lọc theo cấp đơn vị Trung đoàn 750</h3>
+
+<select id="cap">
+  <option value="all">Toàn đơn vị</option>
+  <option value="trungdoan">Trung đoàn 750</option>
+  <option value="tieudoan1">Tiểu đoàn 1</option>
+  <option value="tieudoan2">Tiểu đoàn 2</option>
+  <option value="tieudoan3">Tiểu đoàn 3</option>
+
+  <option value="d1">Đại đội 1</option>
+  <option value="d2">Đại đội 2</option>
+  <option value="d3">Đại đội 3</option>
+  <option value="dkz">Đại đội ĐKZ82</option>
+
+  <option value="td1">Trung đội 1</option>
+  <option value="td2">Trung đội 2</option>
+  <option value="td3">Trung đội 3</option>
+</select>
+
+<button onclick="loadList()">🔍 Lọc danh sách</button>
+
+<div id="list"></div>
+
+<button onclick="report()">📊 Xuất báo cáo</button>
+<button onclick="stats()">📊 Thống kê</button>
+<button onclick="autoReport()">📊 Báo cáo tự động theo cấp</button>
+<div id="report"></div>
+
+<div id="report"></div>
+<button onclick="exportWord()">📄 Xuất Word</button>
+
