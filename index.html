@@ -2,73 +2,103 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
+
   <title>Ứng dụng nắm tình hình</title>
+
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#0d6efd">
+
+  <!-- Excel -->
+  <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+
+  <!-- CSS -->
   <link rel="stylesheet" href="style.css">
-</head><link rel="manifest" href="manifest.json">
+</head>
 
 <body>
-  <div class="container">
-    <h2>📋 Nắm tình hình tư tưởng đơn vị</h2>
 
-    <label>Họ tên</label>
-    <input id="name" type="text" placeholder="Nhập họ tên">
+<div class="container">
+  <h2>📋 Nắm tình hình tư tưởng đơn vị</h2>
 
-    <label>Tình trạng</label>
-    <select id="status">
-      <option value="Tốt">Tốt</option>
-      <option value="Bình thường">Bình thường</option>
-      <option value="Cần chú ý">Cần chú ý</option>
-    </select>
+  <!-- Nhập báo cáo -->
+  <label>Họ tên</label>
+  <input id="name" type="text" placeholder="Nhập họ tên">
 
-    <label>Ghi chú</label>
-    <textarea id="note" placeholder="Nhập nội dung..."></textarea>
+  <label>Tình trạng</label>
+  <select id="status">
+    <option value="Tốt">Tốt</option>
+    <option value="Bình thường">Bình thường</option>
+    <option value="Cần chú ý">Cần chú ý</option>
+  </select>
 
-    <button onclick="saveData()">Gửi báo cáo</button>
+  <label>Ghi chú</label>
+  <textarea id="note" placeholder="Nhập nội dung..."></textarea>
 
-    <h3>Kết quả đã gửi</h3>
-    <button onclick="clearAll()">🗑️ Xóa hôm nay</button>
-<button onclick="showHistory()">📅 Xem lịch sử</button>
+  <button onclick="saveData()">Gửi báo cáo</button>
 
-<div id="result"></div>
+  <hr>
 
-<div id="history"></div>
+  <!-- Import Excel -->
+  <h3>📥 Nhập danh sách</h3>
+  <input type="file" id="fileInput">
+  <button onclick="importExcel()">📥 Nhập Excel</button>
+  <button onclick="resetList()">🔄 Thay danh sách</button>
+
+  <hr>
+
+  <!-- Kết quả -->
+  <h3>Kết quả hôm nay</h3>
+  <button onclick="clearAll()">🗑️ Xóa hôm nay</button>
+  <button onclick="showHistory()">📅 Lịch sử</button>
+
+  <div id="result"></div>
+  <div id="history"></div>
+
+  <hr>
+
+  <!-- Lọc đơn vị -->
+  <h3>📌 Lọc theo cấp đơn vị Trung đoàn 750</h3>
+
+  <select id="cap">
+    <option value="all">Toàn đơn vị</option>
+    <option value="trungdoan">Trung đoàn</option>
+    <option value="tieudoan1">Tiểu đoàn 1</option>
+    <option value="tieudoan2">Tiểu đoàn 2</option>
+    <option value="tieudoan3">Tiểu đoàn 3</option>
+    <option value="d1">Đại đội 1</option>
+    <option value="d2">Đại đội 2</option>
+    <option value="d3">Đại đội 3</option>
+    <option value="dkz">Đại đội ĐKZ82</option>
+    <option value="td1">Trung đội 1</option>
+    <option value="td2">Trung đội 2</option>
+    <option value="td3">Trung đội 3</option>
+  </select>
+
+  <button onclick="loadList()">🔍 Lọc danh sách</button>
+
+  <div id="list"></div>
+
+  <hr>
+
+  <!-- Báo cáo -->
+  <button onclick="autoReport()">📊 Dashboard</button>
+  <button onclick="stats()">📊 Thống kê</button>
+  <button onclick="exportWord()">📄 Xuất Word</button>
+
+  <div id="report"></div>
+
 </div>
 
-  <script src="app.js"></script>
-</body><script>
-  if ("serviceWorker" in navigator) {
-    navigator.serviceWorker.register("service-worker.js");
-  }
+<!-- JS -->
+<script src="app.js"></script>
+
+<!-- Service Worker -->
+<script>
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('service-worker.js');
+}
 </script>
+
+</body>
 </html>
-<h3>📌 Lọc theo cấp đơn vị Trung đoàn 750</h3>
-
-<select id="cap">
-  <option value="all">Toàn đơn vị</option>
-  <option value="trungdoan">Trung đoàn 750</option>
-  <option value="tieudoan1">Tiểu đoàn 1</option>
-  <option value="tieudoan2">Tiểu đoàn 2</option>
-  <option value="tieudoan3">Tiểu đoàn 3</option>
-
-  <option value="d1">Đại đội 1</option>
-  <option value="d2">Đại đội 2</option>
-  <option value="d3">Đại đội 3</option>
-  <option value="dkz">Đại đội ĐKZ82</option>
-
-  <option value="td1">Trung đội 1</option>
-  <option value="td2">Trung đội 2</option>
-  <option value="td3">Trung đội 3</option>
-</select>
-
-<button onclick="loadList()">🔍 Lọc danh sách</button>
-
-<div id="list"></div>
-
-<button onclick="report()">📊 Xuất báo cáo</button>
-<button onclick="stats()">📊 Thống kê</button>
-<button onclick="autoReport()">📊 Báo cáo tự động theo cấp</button>
-<div id="report"></div>
-
-<div id="report"></div>
-<button onclick="exportWord()">📄 Xuất Word</button>
-
